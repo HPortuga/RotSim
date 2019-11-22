@@ -18,3 +18,7 @@ interfaceGráfica
   Botão Iniciar
   Deve ser capaz de logar cada emissor e cada roteador 
   na janela de cada um.
+
+1 - Fazer 1 emissor enviar 'oi' para roteador default
+2 - Propagar 'oi' para todos os roteadores
+3 - Expandir condições e lógica de roteamento
