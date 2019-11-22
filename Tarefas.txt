@@ -1,2 +1,20 @@
-Criar classe emissor
-              roteador
+emissor
+  IP do roteador default
+  porta do roteador default
+  IP origem
+  IP destino
+  Mensagem
+  Cabeçalho (dicionário; TTL = 5)
+
+roteador
+  porta
+  lista de dicionarios, onde as chaves são
+    rede de destino (endereço IP)
+    máscara de ip (32 bits)
+    nextHop (gateway; próximo roteador)
+    portaDoHop (porta do próximo roteador)
+  
+interfaceGráfica
+  Botão Iniciar
+  Deve ser capaz de logar cada emissor e cada roteador 
+  na janela de cada um.
