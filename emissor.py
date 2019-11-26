@@ -9,4 +9,19 @@ class emissor():
     self.cabecalho = self.construirCabecalho()
 
   def constrirCabecalho(self):
-    return dict()
+    cab = {}
+    cab["versao"] = ""
+    cab["IHL"] = ""
+    cab["TOS"] = ""
+    cab["tamTotal"] = ""
+    cab["ID"] = ""
+    cab["flag"] = ""
+    cab["offset"] = ""
+    cab["TTL"] = 5
+    cab["protocolo"] = "Ipv4"
+    cab["checkSum"] = ""
+    cab["origem"] = self.ipOrigem
+    cab["destino"] = self.ipDestino
+    cab["opcoes"] = ""
+    cab["dados"] = self.mensagem
+    return cab
