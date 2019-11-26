@@ -13,4 +13,4 @@ class roteador():
 
     cabecalho["TTL"] -= 1
 
-    # TODO: Check the correct Route. Send packge if there is a route, or inform if the destination is not reachable
+    # TODO: Check the correct Route. Send packet if there is a route, or inform if the destination is not reachable
