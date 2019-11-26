@@ -5,10 +5,9 @@ class emissor():
     self.ipOrigem = ipOrigem
     self.ipDestino = ipDestino
     self.mensagem = mensagem
-
     self.cabecalho = self.construirCabecalho()
 
-  def constrirCabecalho(self):
+  def construirCabecalho(self):
     cab = {}
     cab["versao"] = ""
     cab["IHL"] = ""
