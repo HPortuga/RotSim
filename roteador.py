@@ -1,8 +1,13 @@
 import socket
 import sys
+import time
 
 class roteador():
   def __init__(self, porta, tabRot):
+<<<<<<< HEAD
+=======
+    print("Instanciando roteador na porta %s\n" % porta)
+>>>>>>> a71f6af4a47ccf57a12890136602233d199f23ea
     self.localIP = "127.0.0.1"
     self.bufferSize = 65335                           # Max packet size
     self.porta = porta
@@ -69,8 +74,14 @@ class roteador():
       self.tabRot[index]["gateway"][1], self.tabRot[index]["gateway"][2],
       self.tabRot[index]["gateway"][3], self.tabRot[index]["porta"]))
 
+<<<<<<< HEAD
 rot = roteador(8080, "")
 # print("OIE")
 # argumentos = sys.argv
 # roteador = roteador(int(argumentos[1]), argumentos[2])
 # print("Instanciando roteador na porta %s\n" % argumentos[1])
+=======
+argumentos = sys.argv
+roteador = roteador(int(argumentos[1]), argumentos[2])
+
+>>>>>>> a71f6af4a47ccf57a12890136602233d199f23ea
