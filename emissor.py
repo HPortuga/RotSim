@@ -35,12 +35,12 @@ class emissor():
     ip = self.ipOrigem.split('.')
 
     for i in ip:
-      pkg.append(int(i, 16))                                # Get Ip de Origem
+      pkg.append(int(i, 10))                                # Get Ip de Origem
 
     ip = self.ipDestino.split('.')
 
     for i in ip:
-      pkg.append(int(i, 16))                                # Get Ip de Origem
+      pkg.append(int(i, 10))                                # Get Ip de Origem
 
     pkg.append(0x00)
     pkg.append(0x00)
@@ -62,5 +62,5 @@ class emissor():
     udpClientSocket.sendto(self.pacote, serverAddressPort)
 
 
-emissor = emissor("127.0.0.1", 8080, "10.10.10.10", "5.5.5.5", "OLA")
+emissor = emissor("127.0.0.1", 8080, "10.10.10.10", "65.65.65.65", "OLA")
 emissor.enviarMensagem()

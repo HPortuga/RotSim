@@ -15,14 +15,12 @@ class roteador():
 
     while(True):
       data = updServerSocket.recvfrom(self.bufferSize)
-      message = data[0]
+      pkg = list(data[0])
       address = data[1]
-
-      clientMsg = "Mensagem do cliente: {}".format(message)
-      clientIP = "IP do cliente: {}".format(address)
-
-      print(clientMsg)
-      print(clientIP)
+      ttl = pkg[8]
+      origem = pkg[12:16]
+      destino = pkg[16:20]
+      msg = "".join(pkg[24:])
 
   def processarPacote (self, cabecalho):
     
