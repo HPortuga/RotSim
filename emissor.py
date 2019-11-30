@@ -56,7 +56,7 @@ class emissor():
 
     for j in self.mensagem:
       char = ord(j)
-      cab.append(int(str(char), 16))                                     # Get message
+      cab.append(int(hex(char), 16))                                     # Get message
     
     return cab
 
