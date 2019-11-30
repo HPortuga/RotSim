@@ -64,6 +64,5 @@ class emissor():
     udpClientSocket.sendto(self.pacote, serverAddressPort)
 
 argumentos = sys.argv
-print(argumentos)
 emissor = emissor(argumentos[1], int(argumentos[2]), argumentos[3], argumentos[4])
 
