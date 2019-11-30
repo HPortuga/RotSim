@@ -1,4 +1,5 @@
 import socket
+import sys
 
 class roteador():
   def __init__(self, porta, tabRot):
@@ -20,7 +21,7 @@ class roteador():
       ttl = pkg[8]
       origem = pkg[12:16]
       destino = pkg[16:20]
-      msg = "".join(pkg[24:])
+      # msg = "".join(pkg[24:])
 
   def processarPacote (self, cabecalho):
     
@@ -32,4 +33,7 @@ class roteador():
 
     # TODO: Check the correct Route. Send packet if there is a route, or inform if the destination is not reachable
 
-roteador = roteador(8080, "")
+print("OIE")
+# argumentos = sys.argv
+# roteador = roteador(int(argumentos[1]), argumentos[2])
+# print("Instanciando roteador na porta %s\n" % argumentos[1])
