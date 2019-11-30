@@ -1,16 +1,18 @@
 import socket
 import binascii
+import sys
 
 
 class emissor():
   
-  def __init__(self, ipRoteador, portaRoteador, ipOrigem, ipDestino, mensagem):
+  def __init__(self, ipRoteador, portaRoteador, ipOrigem, ipDestino):
     self.ipRoteador = ipRoteador
     self.portaRoteador = portaRoteador
     self.ipOrigem = ipOrigem
     self.ipDestino = ipDestino
-    self.mensagem = mensagem
+    self.mensagem = "Bom dia"
     self.pacote = self.construirPacote()
+    self.enviarMensagem()
     
   def construirPacote(self):
     pkg = bytearray()
@@ -61,6 +63,7 @@ class emissor():
 
     udpClientSocket.sendto(self.pacote, serverAddressPort)
 
+argumentos = sys.argv
+print(argumentos)
+emissor = emissor(argumentos[1], int(argumentos[2]), argumentos[3], argumentos[4])
 
-emissor = emissor("127.0.0.1", 8080, "10.10.10.10", "65.65.65.65", "OLA")
-emissor.enviarMensagem()

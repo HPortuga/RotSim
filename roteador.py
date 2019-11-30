@@ -18,6 +18,7 @@ class roteador():
 
     while(True):
       data = updServerSocket.recvfrom(self.bufferSize)
+      print("conectado com {}".format(data[1]))
       self.processarPacote(bytearray(data[0]))
 
   def processarPacote (self, data):
