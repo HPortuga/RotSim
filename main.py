@@ -1,10 +1,4 @@
 import os
-from subprocess import call
-from subprocess import Popen
-from subprocess import PIPE
-
-RUNROT = "gnome-terminal -e python3 roteador.py "
-RUNEMI = "gnome-terminal -x python3 emissor.py "
 
 if __name__ == "__main__":
 	roteadores = list()
@@ -48,4 +42,8 @@ if __name__ == "__main__":
 
 		porta = roteador["porta"]
 		os.system("gnome-terminal -x python3 roteador.py " + porta + " " + argTabela)
+
+	for emissor in emissores:
+		arg = "gnome-terminal -x python3 emissor.py " + emissor["ip roteador"] + " " + emissor["porta roteador"] + " " + emissor["ip origem"] + " " + emissor["ip destino"]
+		os.system(arg)
 		

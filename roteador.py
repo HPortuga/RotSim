@@ -4,6 +4,7 @@ import time
 
 class roteador():
   def __init__(self, porta, tabRot):
+    print("Instanciando roteador na porta %s\n" % porta)
     self.localIP = "127.0.0.1"
     self.bufferSize = 65335                           # Max packet size
     self.porta = porta
@@ -17,6 +18,7 @@ class roteador():
 
     while(True):
       data = updServerSocket.recvfrom(self.bufferSize)
+      print("conectado com {}".format(data[1]))
       self.processarPacote(bytearray(data[0]))
 
   def processarPacote (self, data):
@@ -70,8 +72,6 @@ class roteador():
       self.tabRot[index]["gateway"][1], self.tabRot[index]["gateway"][2],
       self.tabRot[index]["gateway"][3], self.tabRot[index]["porta"]))
 
-rot = roteador(8080, "")
-# print("OIE")
-# argumentos = sys.argv
-# roteador = roteador(int(argumentos[1]), argumentos[2])
-# print("Instanciando roteador na porta %s\n" % argumentos[1])
+argumentos = sys.argv
+roteador = roteador(int(argumentos[1]), argumentos[2])
+
