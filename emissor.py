@@ -10,7 +10,7 @@ class emissor():
     self.ipOrigem = ipOrigem
     self.ipDestino = ipDestino
     self.mensagem = mensagem
-    self.cabecalho = self.construirCabecalho()
+    self.cabecalho = self.construirPacote()
 
   def encode (self, text):
     encoded = binascii.hexlify(bytes(text, "utf-8"))
@@ -18,10 +18,10 @@ class emissor():
     encoded = encoded.strip("'")
     return encoded
 
-  def construirCabecalho(self):
+  def construirPacote(self):
     cab = bytearray()
     msg_bytes = self.encode(self.mensagem)                        # Turn message into bytearray
-    size = len(msg_bytes) + 24                                # Packet size 
+    size = len(self.mensagem) + 24                                # Packet size 
 
     cab.append(0x0000)                                        # Versao = 0, HL = 0, TOS = 00
 
@@ -61,14 +61,12 @@ class emissor():
     return cab
 
   def enviarMensagem(self):
-    msgFromClient = "Hello UDP server"
-    bytesToSend = str.encode(msgFromClient)
     serverAddressPort = (self.ipRoteador, self.portaRoteador)
     bufferSize = 1024
 
     udpClientSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
 
-    udpClientSocket.sendto(bytesToSend, serverAddressPort)
+    udpClientSocket.sendto(self.cabecalho, serverAddressPort)
     msgFromServer = udpClientSocket.recvfrom(bufferSize)
 
     msg = "Message from Server {}".format(msgFromServer[0])
@@ -76,4 +74,4 @@ class emissor():
 
 
 emissor = emissor("127.0.0.1", 8080, "10.10.10.10", "5.5.5.5", "OLA")
-#emissor.enviarMensagem()
+emissor.enviarMensagem()
