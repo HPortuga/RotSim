@@ -11,13 +11,7 @@ class emissor():
     self.ipDestino = ipDestino
     self.mensagem = mensagem
     self.pacote = self.construirPacote()
-
-  def encode (self, text):
-    encoded = binascii.hexlify(bytes(text, "utf-8"))
-    encoded = str(encoded).strip("b")
-    encoded = encoded.strip("'")
-    return encoded
-
+    
   def construirPacote(self):
     pkg = bytearray()
     size = len(self.mensagem) + 24                          # Packet size 
