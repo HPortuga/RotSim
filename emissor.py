@@ -10,7 +10,7 @@ class emissor():
     self.ipOrigem = ipOrigem
     self.ipDestino = ipDestino
     self.mensagem = mensagem
-    self.cabecalho = self.construirPacote()
+    self.pacote = self.construirPacote()
 
   def encode (self, text):
     encoded = binascii.hexlify(bytes(text, "utf-8"))
@@ -19,46 +19,45 @@ class emissor():
     return encoded
 
   def construirPacote(self):
-    cab = bytearray()
-    msg_bytes = self.encode(self.mensagem)                        # Turn message into bytearray
-    size = len(self.mensagem) + 24                                # Packet size 
+    pkg = bytearray()
+    size = len(self.mensagem) + 24                          # Packet size 
 
-    cab.append(0x00)                                        # Versao = 0, HL = 0, TOS = 00
-    cab.append(0x00)
+    pkg.append(0x00)                                        # Versao = 0, HL = 0, TOS = 00
+    pkg.append(0x00)
 
     if size < 256:
-      cab.append(0x00)                                        # Get datagrama size
-    cab.append(int(hex(size), 16))
+      pkg.append(0x00)                                      # Get datagrama size
+    pkg.append(int(hex(size), 16))
 
-    cab.append(0x00)                                 # ID = 0000, flags + offset = 0000
-    cab.append(0x00)                                
-    cab.append(0x00)                                 
-    cab.append(0x00)                                 
-    cab.append(0x05)                                      
-    cab.append(0x00)                                         
-    cab.append(0x00)                                         
-    cab.append(0x00)                                         
+    pkg.append(0x00)                                 
+    pkg.append(0x00)                                
+    pkg.append(0x00)                                        # ID = 0000, flags + offset = 0000   
+    pkg.append(0x00)                                 
+    pkg.append(0x05)                                        # TTL = 5                                       
+    pkg.append(0x00)                                         
+    pkg.append(0x00)                                        # Protocolo = 00, checksum = 0000
+    pkg.append(0x00)                                         
 
     ip = self.ipOrigem.split('.')
 
     for i in ip:
-      cab.append(int(i, 16))                                  # Get Ip de Origem
+      pkg.append(int(i, 16))                                # Get Ip de Origem
 
     ip = self.ipDestino.split('.')
 
     for i in ip:
-      cab.append(int(i, 16))                                   # Get Ip de Origem
+      pkg.append(int(i, 16))                                # Get Ip de Origem
 
-    cab.append(0x00)
-    cab.append(0x00)
-    cab.append(0x00)
-    cab.append(0x00)
+    pkg.append(0x00)
+    pkg.append(0x00)
+    pkg.append(0x00)
+    pkg.append(0x00)
 
     for j in self.mensagem:
       char = ord(j)
-      cab.append(int(hex(char), 16))                                     # Get message
+      pkg.append(int(hex(char), 16))                        # Get message
     
-    return cab
+    return pkg
 
   def enviarMensagem(self):
     serverAddressPort = (self.ipRoteador, self.portaRoteador)
@@ -66,11 +65,7 @@ class emissor():
 
     udpClientSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
 
-    udpClientSocket.sendto(self.cabecalho, serverAddressPort)
-    msgFromServer = udpClientSocket.recvfrom(bufferSize)
-
-    msg = "Message from Server {}".format(msgFromServer[0])
-    print(msg)
+    udpClientSocket.sendto(self.pacote, serverAddressPort)
 
 
 emissor = emissor("127.0.0.1", 8080, "10.10.10.10", "5.5.5.5", "OLA")

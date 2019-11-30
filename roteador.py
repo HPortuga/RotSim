@@ -3,16 +3,12 @@ import socket
 class roteador():
   def __init__(self, porta, tabRot):
     self.localIP = "127.0.0.1"
-    self.bufferSize = 1024
+    self.bufferSize = 65335                           # Max packet size
     self.porta = porta
     self.tabRot = tabRot                              # Pode ser uma lista de dicionarios construida na main a partir do txt. Os dicionarios possuem rede-destino/máscara/gateway/interface
-    self.cabecalho = {}       
-    self.startServer()                        # usado para receber pacotes IP
+    self.startServer()                                # usado para receber pacotes IP
 
   def startServer(self):
-    msgFromServer = "Hello Client"
-    bytesToSend = str.encode(msgFromServer)
-
     updServerSocket = socket.socket(family=socket.AF_INET, type= socket.SOCK_DGRAM)
     updServerSocket.bind((self.localIP, self.porta))
     print("Servidor UDP escutando...")
@@ -27,8 +23,6 @@ class roteador():
 
       print(clientMsg)
       print(clientIP)
-
-      updServerSocket.sendto(bytesToSend, address)
 
   def processarPacote (self, cabecalho):
     
