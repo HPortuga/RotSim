@@ -1,11 +1,12 @@
 import socket
+import sys
 
 class roteador():
   def __init__(self, porta, tabRot, meuIp):
     self.localIP = meuIp.strip(".")
     self.bufferSize = 65335                           # Max packet size
     self.porta = porta
-    self.tabRot = tabRot                              # Pode ser uma lista de dicionarios construida na main a partir do txt. Os dicionarios possuem rede-destino/máscara/gateway/interface
+    self.tabRot = list()                              # Pode ser uma lista de dicionarios construida na main a partir do txt. Os dicionarios possuem rede-destino/máscara/gateway/interface
     self.startServer()                                # usado para receber pacotes IP
 
   def startServer(self):
@@ -21,7 +22,7 @@ class roteador():
     pkg = list(data)
     ttl = pkg[8]
     origem = pkg[12:16]
-    destino = pkg[16:20]
+    destino = bytes(pkg[16:20])
     msg = pkg[24:]
 
     for i in range(len(msg)):
@@ -35,10 +36,32 @@ class roteador():
 
     data[8] = ttl - 1
 
-    for e in self.tabRot:
-      e
+    line = [("destino", bytearray([65,65,65,65])), ("mascara", bytearray([255, 255, 255, 0])), ("gateway", bytearray([0,7,0,0]))]
+    line = dict(line)
+    self.tabRot.append(line)
 
+    maiorMask = 0
+    index = -1
+    for e in range(len(self.tabRot)):
 
-    # TODO: Check the correct Route. Send packet if there is a route, or inform if the destination is not reachable
+      if ((int.from_bytes(self.tabRot[e]["destino"], sys.byteorder ) & 
+      int.from_bytes(self.tabRot[e]["mascara"], sys.byteorder)) == 
+      (int.from_bytes(destino, sys.byteorder) & 
+      int.from_bytes(self.tabRot[e]["mascara"], sys.byteorder))):
+
+        if (self.tabRot[e]["gateway"] == bytearray([0, 0, 0, 0])):                      # I am the final destination
+          # print("destination reached. From %s to  %s: %s", "".join(origem), "".join(pkg[16:20]), msg )
+          print("DESTINO ALCANÇADO")
+          return
+        
+        if (maiorMask < int.from_bytes(self.tabRot[e]["mascara"], sys.byteorder)):      # I am the biggest current match
+          maiorMask = int.from_bytes(self.tabRot[e]["mascara"], sys.byteorder)
+          index = e
+
+    if (index == -1):                                                                   # Couldn't find compatible route
+      print("destination not found")
+    else:
+      # TODO: Forward message
+      print("MSG ENVIADA")
 
 roteador = roteador(8080, "", "65.65.65.65")
