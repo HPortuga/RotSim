@@ -1,4 +1,6 @@
 import socket
+import binascii
+
 
 class emissor():
   
@@ -10,9 +12,15 @@ class emissor():
     self.mensagem = mensagem
     self.cabecalho = self.construirCabecalho()
 
+  def encode (self, text):
+    encoded = binascii.hexlify(bytes(text, "utf-8"))
+    encoded = str(encoded).strip("b")
+    encoded = encoded.strip("'")
+    return encoded
+
   def construirCabecalho(self):
     cab = bytearray()
-    msg_bytes = self.mensagem.encode()                        # Turn message into bytearray
+    msg_bytes = self.encode(self.mensagem)                        # Turn message into bytearray
     size = len(msg_bytes) + 24                                # Packet size 
 
     cab.append(0x0000)                                        # Versao = 0, HL = 0, TOS = 00
@@ -23,29 +31,32 @@ class emissor():
       cab.append(0x00)                                        # Get datagrama size
     elif size < 4096:
       cab.append(0x0)
-    cab.append(hex(size))
+    cab.append(int(hex(size), 16))
 
-    cab.append(0x00000000)                                    # ID = 00, flags + offset = 00
-    cab.append(0x5)                                           # TTL = 5
-    cab.append(0x000)                                         # Protocolo = 0, checksum = 00
+    cab.append(0x00000000)                                    # ID = 0000, flags + offset = 0000
+    cab.append(0x05)                                           # TTL = 05
+    cab.append(0x000000)                                         # Protocolo = 00, checksum = 0000
 
     ip = self.ipOrigem.split('.')
 
     for i in ip:
-      if i < 16:
+      aux = int(i)
+      if aux < 16:
         cab.append(0x0)
-      cab.append(hex(i))                                    # Get Ip de Origem
+      cab.append(int(hex(aux), 16))                                    # Get Ip de Origem
 
     ip = self.ipDestino.split('.')
 
     for i in ip:
-      if i < 16:
+      aux = int(i)
+      if aux < 16:
         cab.append(0x0)
-      cab.append(hex(i))                                    # Get Ip de Destino
+      cab.append(int(hex(aux), 16))                                    # Get Ip de Destino
 
     cab.append(0x00000000)                                  # Options = 00000000
 
-    cab.append(msg_bytes)                                   # Get message
+    for j in msg_bytes:
+      cab.append(int(j, 16))                                     # Get message
     
     return cab
 
@@ -64,5 +75,5 @@ class emissor():
     print(msg)
 
 
-emissor = emissor("127.0.0.1", 8080, "", "", "")
-emissor.enviarMensagem()
+emissor = emissor("127.0.0.1", 8080, "10.10.10.10", "5.5.5.5", "OLA")
+#emissor.enviarMensagem()
