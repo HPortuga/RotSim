@@ -1,6 +1,7 @@
 import os
 from subprocess import call
 from subprocess import Popen
+from subprocess import PIPE
 
 RUNROT = "gnome-terminal -e python3 roteador.py "
 RUNEMI = "gnome-terminal -x python3 emissor.py "
@@ -46,25 +47,5 @@ if __name__ == "__main__":
 		argTabela = argTabela[:-1]
 
 		porta = roteador["porta"]
-		call(['gnome-terminal', '-e', "python3 /home/Faculdade/Redes/T2/RotSim/roteador.py"])
-		# Popen(["python3", "roteador.py"], shell=False)
-		# Popen(["gnome-terminal", "python3", "roteador.py", roteador["porta"], argTabela])
-	
-	# Popen(["python3", "roteador.py"]) 
-	# Popen(["python3", "emissor.py"]) 
-
-	
-	# call(['gnome-terminal', '-x', '-e', "python3 /home/Faculdade/Redes/T2/RotSim/roteador.py"])
-	# Instanciar roteadores
-	# for roteador in roteadores:
-	# 	tabela = roteador["tabela"]
-	# 	commandLineArgs = RUNROT + roteador["porta"]
-
-	# 	for line in tabela:
-	# 		commandLineArgs = commandLineArgs + " " + line
-
-	# 	os.system(commandLineArgs)
-
-	# Abre uma janela para cada processo
-	# os.system("gnome-terminal -x python3 roteador.py")
-	# os.system("gnome-terminal -x python3 emissor.py")
+		os.system("gnome-terminal -x python3 roteador.py " + porta + " " + argTabela)
+		

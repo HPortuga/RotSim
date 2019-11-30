@@ -1,9 +1,11 @@
 import socket
 import sys
+import time
 
 class roteador():
-  def __init__(self, porta, tabRot, meuIp):
-    self.localIP = meuIp.strip(".")
+  def __init__(self, porta, tabRot):
+    print("Instanciando roteador na porta %s\n" % porta)
+    self.localIP = "127.0.0.1"
     self.bufferSize = 65335                           # Max packet size
     self.porta = porta
     self.tabRot = list()                              # Pode ser uma lista de dicionarios construida na main a partir do txt. Os dicionarios possuem rede-destino/máscara/gateway/interface
@@ -64,7 +66,6 @@ class roteador():
       # TODO: Forward message
       print("MSG ENVIADA")
 
-print("OIE")
-# argumentos = sys.argv
-# roteador = roteador(int(argumentos[1]), argumentos[2])
-# print("Instanciando roteador na porta %s\n" % argumentos[1])
+argumentos = sys.argv
+roteador = roteador(int(argumentos[1]), argumentos[2])
+
