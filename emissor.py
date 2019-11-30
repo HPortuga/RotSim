@@ -1,3 +1,5 @@
+import socket
+
 class emissor():
   
   def __init__(self, ipRoteador, portaRoteador, ipOrigem, ipDestino, mensagem):
@@ -47,4 +49,20 @@ class emissor():
     
     return cab
 
-    
+  def enviarMensagem(self):
+    msgFromClient = "Hello UDP server"
+    bytesToSend = str.encode(msgFromClient)
+    serverAddressPort = (self.ipRoteador, self.portaRoteador)
+    bufferSize = 1024
+
+    udpClientSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
+
+    udpClientSocket.sendto(bytesToSend, serverAddressPort)
+    msgFromServer = udpClientSocket.recvfrom(bufferSize)
+
+    msg = "Message from Server {}".format(msgFromServer[0])
+    print(msg)
+
+
+emissor = emissor("127.0.0.1", 8080, "", "", "")
+emissor.enviarMensagem()
