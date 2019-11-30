@@ -23,40 +23,40 @@ class emissor():
     msg_bytes = self.encode(self.mensagem)                        # Turn message into bytearray
     size = len(self.mensagem) + 24                                # Packet size 
 
-    cab.append(0x0000)                                        # Versao = 0, HL = 0, TOS = 00
+    cab.append(0x00)                                        # Versao = 0, HL = 0, TOS = 00
+    cab.append(0x00)
 
-    if size < 16:
-      cab.append(0x000)
-    elif size < 256:
+    if size < 256:
       cab.append(0x00)                                        # Get datagrama size
-    elif size < 4096:
-      cab.append(0x0)
     cab.append(int(hex(size), 16))
 
-    cab.append(0x00000000)                                    # ID = 0000, flags + offset = 0000
-    cab.append(0x05)                                           # TTL = 05
-    cab.append(0x000000)                                         # Protocolo = 00, checksum = 0000
+    cab.append(0x00)                                 # ID = 0000, flags + offset = 0000
+    cab.append(0x00)                                
+    cab.append(0x00)                                 
+    cab.append(0x00)                                 
+    cab.append(0x05)                                      
+    cab.append(0x00)                                         
+    cab.append(0x00)                                         
+    cab.append(0x00)                                         
 
     ip = self.ipOrigem.split('.')
 
     for i in ip:
-      aux = int(i)
-      if aux < 16:
-        cab.append(0x0)
-      cab.append(int(hex(aux), 16))                                    # Get Ip de Origem
+      cab.append(int(i, 16))                                  # Get Ip de Origem
 
     ip = self.ipDestino.split('.')
 
     for i in ip:
-      aux = int(i)
-      if aux < 16:
-        cab.append(0x0)
-      cab.append(int(hex(aux), 16))                                    # Get Ip de Destino
+      cab.append(int(i, 16))                                   # Get Ip de Origem
 
-    cab.append(0x00000000)                                  # Options = 00000000
+    cab.append(0x00)
+    cab.append(0x00)
+    cab.append(0x00)
+    cab.append(0x00)
 
-    for j in msg_bytes:
-      cab.append(int(j, 16))                                     # Get message
+    for j in self.mensagem:
+      char = ord(j)
+      cab.append(int(str(char), 16))                                     # Get message
     
     return cab
 
