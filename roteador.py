@@ -69,7 +69,7 @@ class roteador():
       (int.from_bytes(bytes(pkg[16:20]), sys.byteorder) & 
       int.from_bytes(self.tabRot[e]["mascara"], sys.byteorder))):
 
-        if (int.from_bytes(self.tabRot[e]["mascara"] != 0)):
+        if (int.from_bytes(self.tabRot[e]["mascara"], sys.byteorder) != 0):
           if (self.tabRot[e]["gateway"] == bytearray([0, 0, 0, 0])):                      # I am the final destination
             print("destination reached. From %d.%d.%d.%d to %d.%d.%d.%d: %s" % (origem[0], origem[1]
             , origem[2], origem[3], destino[0], destino[1], destino[2], destino[3], msg))
