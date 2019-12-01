@@ -64,7 +64,9 @@ class roteador():
 
     if (index == -1):                                                                   # Couldn't find compatible route
       print("destination %d.%d.%d.%d not found in routing table, dropping packet"
-       % (destino[0], destino[1], destino[2], destino[3]))
+        % (destino[0], destino[1], destino[2], destino[3]))
+      return
+      
     else:
       # TODO: Forward message
       print("forwarding packet for %d.%d.%d.%d to next hop %d.%d.%d.%d over interface %d" 
