@@ -68,9 +68,17 @@ class roteador():
     else:
       # TODO: Forward message
       print("forwarding packet for %d.%d.%d.%d to next hop %d.%d.%d.%d over interface %d" 
-      % (destino[0], destino[1], destino[2], destino[3],self.tabRot[index]["gateway"][0], 
-      self.tabRot[index]["gateway"][1], self.tabRot[index]["gateway"][2],
-      self.tabRot[index]["gateway"][3], self.tabRot[index]["porta"]))
+        % (destino[0], destino[1], destino[2], destino[3],self.tabRot[index]["gateway"][0], 
+        self.tabRot[index]["gateway"][1], self.tabRot[index]["gateway"][2],
+        self.tabRot[index]["gateway"][3], self.tabRot[index]["porta"]))
+
+      nextHopAddressPort = (self.localIP, self.tabRot[index]["porta"])
+      bufferSize = 1024
+
+      udpClientSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
+      udpClientSocket.sendto(data, nextHopAddressPort)
+
+
 
 argumentos = sys.argv
 roteador = roteador(int(argumentos[1]), argumentos[2])
