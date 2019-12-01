@@ -8,8 +8,21 @@ class roteador():
     self.localIP = "127.0.0.1"
     self.bufferSize = 65335                           # Max packet size
     self.porta = porta
-    self.tabRot = list()                              # Pode ser uma lista de dicionarios construida na main a partir do txt. Os dicionarios possuem rede-destino/máscara/gateway/interface
+    self.tabRot = self.construirTabela(tabRot)                           # Pode ser uma lista de dicionarios construida na main a partir do txt. Os dicionarios possuem rede-destino/máscara/gateway/interface
     self.startServer()                                # usado para receber pacotes IP
+
+  def construirTabela(self, tabRot):
+    ret = []
+    aux = tabRot.split()
+    for e in aux:
+      aux2 = e.split('/')
+      dic = {"destino": bytearray(aux[0].split(".")), "mascara": bytearray(aux[1].split(".")),
+      "gateway": bytearray(aux[2].split(".")), "porta":aux[3]}
+      ret.append(dic)
+
+    return ret
+
+
 
   def startServer(self):
     updServerSocket = socket.socket(family=socket.AF_INET, type= socket.SOCK_DGRAM)
@@ -32,12 +45,6 @@ class roteador():
       msg[i] = chr(msg[i])
 
     msg = "".join(msg)
-           
-    if ttl == 1:                         # Dropa pacote caso TTL tenha acabado
-      print("Time to Live exceeded in Transit, dropping packet for ".join(destino))
-      return
-
-    data[8] = ttl - 1
 
     line = [("destino", bytearray([65,65,65,65])), ("mascara", bytearray([255, 255, 255, 0])), 
     ("gateway", bytearray([2,0,3,0])), ("porta", 1111)]
@@ -61,6 +68,12 @@ class roteador():
         if (maiorMask < int.from_bytes(self.tabRot[e]["mascara"], sys.byteorder)):      # I am the biggest current match
           maiorMask = int.from_bytes(self.tabRot[e]["mascara"], sys.byteorder)
           index = e
+
+    if ttl == 1:                         # Dropa pacote caso TTL tenha acabado
+      print("Time to Live exceeded in Transit, dropping packet for ".join(destino))
+      return
+
+    data[8] = ttl - 1
 
     if (index == -1):                                                                   # Couldn't find compatible route
       print("destination %d.%d.%d.%d not found in routing table, dropping packet"
