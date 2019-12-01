@@ -1,4 +1,5 @@
 import os
+import time
 
 if __name__ == "__main__":
 	roteadores = list()
@@ -36,7 +37,7 @@ if __name__ == "__main__":
 		argTabela = ""
 
 		for line in tabela:
-			argTabela = line + " "
+			argTabela += line + " "
 
 		argTabela = argTabela[:-1]
 
@@ -57,4 +58,4 @@ if __name__ == "__main__":
 		arg += emissor["ip origem"] + " " 
 		arg += emissor["ip destino"]
 		os.system(arg + " >/dev/null 2>&1")
-		
+		time.sleep(4)
