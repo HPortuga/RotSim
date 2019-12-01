@@ -91,8 +91,14 @@ class roteador():
     if (index == -1):                                                                   # Couldn't find compatible route
 
       if (flag == 1):
-        print("SIJDAIOSJDSIODJASIODSJIO")
-        # TODO: pegar rota default
+        print("forwarding packet for %d.%d.%d.%d to next hop %d.%d.%d.%d over interface %d" 
+        % (destino[0], destino[1], destino[2], destino[3],self.tabRot[index_def]["gateway"][0], 
+        self.tabRot[index_def]["gateway"][1], self.tabRot[index_def]["gateway"][2],
+        self.tabRot[index_def]["gateway"][3], self.tabRot[index_def]["porta"]))
+
+        nextHopAddressPort = (self.localIP, self.tabRot[index_def]["porta"])
+        udpClientSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
+        udpClientSocket.sendto(data, nextHopAddressPort)
         return
 
       print("destination %d.%d.%d.%d not found in routing table, dropping packet"

@@ -29,7 +29,8 @@ if __name__ == "__main__":
 				"ip roteador": dados[1],
 				"porta roteador": dados[2],
 				"ip origem": dados[3],
-				"ip destino": dados[4]
+				"ip destino": dados[4],
+				"mensagem": dados[5]
 			})
 
 	for roteador in roteadores:
@@ -56,6 +57,7 @@ if __name__ == "__main__":
 		arg += emissor["ip roteador"] + " " 
 		arg += emissor["porta roteador"] + " " 
 		arg += emissor["ip origem"] + " " 
-		arg += emissor["ip destino"]
+		arg += emissor["ip destino"] + " "
+		arg += emissor["mensagem"]
 		os.system(arg + " >/dev/null 2>&1")
 		time.sleep(4)

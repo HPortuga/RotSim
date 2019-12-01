@@ -5,12 +5,12 @@ import sys
 
 class emissor():
   
-  def __init__(self, ipRoteador, portaRoteador, ipOrigem, ipDestino):
+  def __init__(self, ipRoteador, portaRoteador, ipOrigem, ipDestino, mensagem):
     self.ipRoteador = ipRoteador
     self.portaRoteador = portaRoteador
     self.ipOrigem = ipOrigem
     self.ipDestino = ipDestino
-    self.mensagem = "Bom dia"
+    self.mensagem = mensagem
     self.pacote = self.construirPacote()
     self.enviarMensagem()
     
@@ -65,6 +65,6 @@ class emissor():
     return
 
 argumentos = sys.argv
-emissor = emissor(argumentos[1], int(argumentos[2]), argumentos[3], argumentos[4])
+emissor = emissor(argumentos[1], int(argumentos[2]), argumentos[3], argumentos[4], argumentos[5])
 
 # emissor = emissor("127.0.0.1", 1111, "1.1.1.1", "30.1.2.10")
