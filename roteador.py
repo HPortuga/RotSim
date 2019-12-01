@@ -22,8 +22,6 @@ class roteador():
 
     return ret
 
-
-
   def startServer(self):
     updServerSocket = socket.socket(family=socket.AF_INET, type= socket.SOCK_DGRAM)
     updServerSocket.bind((self.localIP, self.porta))
@@ -45,11 +43,6 @@ class roteador():
       msg[i] = chr(msg[i])
 
     msg = "".join(msg)
-
-    line = [("destino", bytearray([65,65,65,65])), ("mascara", bytearray([255, 255, 255, 0])), 
-    ("gateway", bytearray([2,0,3,0])), ("porta", 1111)]
-    line = dict(line)
-    self.tabRot.append(line)
 
     maiorMask = 0
     index = -1
@@ -81,7 +74,6 @@ class roteador():
       return
       
     else:
-      # TODO: Forward message
       print("forwarding packet for %d.%d.%d.%d to next hop %d.%d.%d.%d over interface %d" 
         % (destino[0], destino[1], destino[2], destino[3],self.tabRot[index]["gateway"][0], 
         self.tabRot[index]["gateway"][1], self.tabRot[index]["gateway"][2],
@@ -92,8 +84,6 @@ class roteador():
 
       udpClientSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
       udpClientSocket.sendto(data, nextHopAddressPort)
-
-
 
 argumentos = sys.argv
 roteador = roteador(int(argumentos[1]), argumentos[2])
