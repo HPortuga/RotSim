@@ -84,9 +84,9 @@ class roteador():
       
     else:
       print("forwarding packet for %d.%d.%d.%d to next hop %d.%d.%d.%d over interface %d" 
-        % (destino[0], destino[1], destino[2], destino[3],self.tabRot[index]["gateway"][0], 
-        self.tabRot[index]["gateway"][1], self.tabRot[index]["gateway"][2],
-        self.tabRot[index]["gateway"][3], self.tabRot[index]["porta"]))
+      % (destino[0], destino[1], destino[2], destino[3],self.tabRot[index]["gateway"][0], 
+      self.tabRot[index]["gateway"][1], self.tabRot[index]["gateway"][2],
+      self.tabRot[index]["gateway"][3], self.tabRot[index]["porta"]))
 
       nextHopAddressPort = (self.localIP, self.tabRot[index]["porta"])
       bufferSize = 1024
@@ -95,5 +95,7 @@ class roteador():
       udpClientSocket.sendto(data, nextHopAddressPort)
 
 argumentos = sys.argv
-roteador = roteador(int(argumentos[1]), argumentos[2])
+# roteador = roteador(int(argumentos[1]), argumentos[2])
+
+roteador = roteador(1111, "10.0.0.0/255.0.0.0/0.0.0.0/0 20.20.0.0/255.255.0.0/0.0.0.0/0 30.1.2.0/255.255.255.0/127.0.0.1/2222")
 
