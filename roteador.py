@@ -60,6 +60,7 @@ class roteador():
 
     maiorMask = 0
     index = -1
+    index_def = -1
     flag = 0
     for e in range(len(self.tabRot)):
 
@@ -79,6 +80,7 @@ class roteador():
             index = e
         else:
           flag = 1
+          index_def = e
     
     if ttl == 1:                         # Dropa pacote caso TTL tenha acabado
       print("Time to Live exceeded in Transit, dropping packet for ".join(destino))
@@ -91,7 +93,7 @@ class roteador():
       if (flag == 1):
         # TODO: pegar rota default
         return
-        
+
       print("destination %d.%d.%d.%d not found in routing table, dropping packet"
       % (destino[0], destino[1], destino[2], destino[3]))
       return 
