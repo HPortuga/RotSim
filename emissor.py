@@ -67,4 +67,4 @@ class emissor():
 argumentos = sys.argv
 emissor = emissor(argumentos[1], int(argumentos[2]), argumentos[3], argumentos[4])
 
-# emissor = emissor("127.0.0.1", 1111, "1.1.1.1", "10.0.0.5")
+# emissor = emissor("127.0.0.1", 1111, "1.1.1.1", "30.1.2.10")

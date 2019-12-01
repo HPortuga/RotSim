@@ -91,6 +91,7 @@ class roteador():
     if (index == -1):                                                                   # Couldn't find compatible route
 
       if (flag == 1):
+        print("SIJDAIOSJDSIODJASIODSJIO")
         # TODO: pegar rota default
         return
 
@@ -108,7 +109,15 @@ class roteador():
       udpClientSocket.sendto(data, nextHopAddressPort)
 
 argumentos = sys.argv
-roteador = roteador(int(argumentos[1]), argumentos[2])
+
+argumento = ""
+entradasDaTabela = argumentos[2:]
+
+for entrada in entradasDaTabela:
+  argumento += entrada + " "
+
+argumento = argumento[:-1]
+roteador = roteador(int(argumentos[1]), argumento)
 
 # roteador = roteador(1111, "10.0.0.0/255.0.0.0/0.0.0.0/0 20.20.0.0/255.255.0.0/0.0.0.0/0 30.1.2.0/255.255.255.0/127.0.0.1/2222")
 
