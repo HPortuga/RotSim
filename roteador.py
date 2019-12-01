@@ -16,8 +16,17 @@ class roteador():
     aux = tabRot.split()
     for e in aux:
       aux2 = e.split('/')
-      dic = {"destino": bytearray(aux[0].split(".")), "mascara": bytearray(aux[1].split(".")),
-      "gateway": bytearray(aux[2].split(".")), "porta":aux[3]}
+      for i in range(len(aux2)-1):
+        aux2[i] = aux2[i].split(".")
+        aux2[i] = [int (val) for val in aux2[i]]
+        
+      dic = {
+        "destino": bytearray(aux2[0]),
+        "mascara": bytearray(aux2[1]),
+        "gateway": bytearray(aux2[2]),
+        "porta": int(aux2[3])
+      }
+      
       ret.append(dic)
 
     return ret
