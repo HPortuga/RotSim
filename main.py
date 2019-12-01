@@ -41,9 +41,20 @@ if __name__ == "__main__":
 		argTabela = argTabela[:-1]
 
 		porta = roteador["porta"]
-		os.system("gnome-terminal -x python3 roteador.py " + porta + " " + argTabela)
+		os.system("gnome-terminal -x python3 roteador.py " + porta + " " + argTabela + " >/dev/null 2>&1")
 
 	for emissor in emissores:
-		arg = "gnome-terminal -x python3 emissor.py " + emissor["ip roteador"] + " " + emissor["porta roteador"] + " " + emissor["ip origem"] + " " + emissor["ip destino"]
-		os.system(arg)
+		if not any(roteador["porta"] == emissor["porta roteador"] for roteador in roteadores):
+			print()
+			print("ATENCAO:")
+			print("	Porta do emissor nao condiz com nenhum roteador")
+			print()
+			continue
+
+		arg = "gnome-terminal -x python3 emissor.py "
+		arg += emissor["ip roteador"] + " " 
+		arg += emissor["porta roteador"] + " " 
+		arg += emissor["ip origem"] + " " 
+		arg += emissor["ip destino"]
+		os.system(arg + " >/dev/null 2>&1")
 		

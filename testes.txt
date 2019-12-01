@@ -18,7 +18,7 @@
 ./emissor 127.0.0.1 1611 1.1.1.1 10.0.0.5
 
 #rota indireta:  Imprimir que  passa em R1, chega no R2   
-./emissor 127.0.0.1 1611 1.1.1.1 30.1.2.10
+./emissor 127.0.0.1 1411 1.1.1.1 30.1.2.10
 
 #rota default:   Imprimir que passa por R2 e passa por R3   
 ./emissor 127.0.0.1 2621 1.1.1.1 20.0.2.1
