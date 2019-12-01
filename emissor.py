@@ -62,8 +62,9 @@ class emissor():
     udpClientSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
 
     udpClientSocket.sendto(self.pacote, serverAddressPort)
+    return
 
 argumentos = sys.argv
-# emissor = emissor(argumentos[1], int(argumentos[2]), argumentos[3], argumentos[4])
+emissor = emissor(argumentos[1], int(argumentos[2]), argumentos[3], argumentos[4])
 
-emissor = emissor("127.0.0.1", 1111, "1.1.1.1", "10.0.0.5")
+# emissor = emissor("127.0.0.1", 1111, "1.1.1.1", "10.0.0.5")

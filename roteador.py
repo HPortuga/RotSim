@@ -32,18 +32,23 @@ class roteador():
     return ret
 
   def startServer(self):
-    updServerSocket = socket.socket(family=socket.AF_INET, type= socket.SOCK_DGRAM)
-    updServerSocket.bind((self.localIP, self.porta))
-    print("Servidor UDP escutando...")
 
     while(True):
+      updServerSocket = socket.socket(family=socket.AF_INET, type= socket.SOCK_DGRAM)
+      updServerSocket.bind((self.localIP, self.porta))
+      print("Servidor UDP escutando...")
       data = updServerSocket.recvfrom(self.bufferSize)
       print("conectado com {}".format(data[1]))
       self.processarPacote(bytearray(data[0]))
+      updServerSocket.close()
 
   def processarPacote (self, data):
     pkg = list(data)
     ttl = pkg[8]
+
+    if ttl == 0:
+      return
+      
     origem = pkg[12:16]
     destino = pkg[16:20]
     msg = pkg[24:]
@@ -67,8 +72,8 @@ class roteador():
           , origem[2], origem[3], destino[0], destino[1], destino[2], destino[3], msg))
           return
         
-        if (maiorMask < int.from_bytes(self.tabRot[e]["mascara"], sys.byteorder)):      # I am the biggest current match
-          maiorMask = int.from_bytes(self.tabRot[e]["mascara"], sys.byteorder)
+        if (maiorMask < int.from_bytes(self.tabRot[e]["mascara"], sys.byteorder, signed=False)):      # I am the biggest current match
+          maiorMask = int.from_bytes(self.tabRot[e]["mascara"], sys.byteorder, signed=False)
           index = e
 
     if ttl == 1:                         # Dropa pacote caso TTL tenha acabado
@@ -79,9 +84,8 @@ class roteador():
 
     if (index == -1):                                                                   # Couldn't find compatible route
       print("destination %d.%d.%d.%d not found in routing table, dropping packet"
-        % (destino[0], destino[1], destino[2], destino[3]))
-      return
-      
+      % (destino[0], destino[1], destino[2], destino[3]))
+      return 
     else:
       print("forwarding packet for %d.%d.%d.%d to next hop %d.%d.%d.%d over interface %d" 
       % (destino[0], destino[1], destino[2], destino[3],self.tabRot[index]["gateway"][0], 
@@ -89,13 +93,11 @@ class roteador():
       self.tabRot[index]["gateway"][3], self.tabRot[index]["porta"]))
 
       nextHopAddressPort = (self.localIP, self.tabRot[index]["porta"])
-      bufferSize = 1024
-
       udpClientSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
       udpClientSocket.sendto(data, nextHopAddressPort)
 
 argumentos = sys.argv
-# roteador = roteador(int(argumentos[1]), argumentos[2])
+roteador = roteador(int(argumentos[1]), argumentos[2])
 
-roteador = roteador(1111, "10.0.0.0/255.0.0.0/0.0.0.0/0 20.20.0.0/255.255.0.0/0.0.0.0/0 30.1.2.0/255.255.255.0/127.0.0.1/2222")
+# roteador = roteador(1111, "10.0.0.0/255.0.0.0/0.0.0.0/0 20.20.0.0/255.255.0.0/0.0.0.0/0 30.1.2.0/255.255.255.0/127.0.0.1/2222")
 
