@@ -60,6 +60,7 @@ class roteador():
 
     maiorMask = 0
     index = -1
+    flag = 0
     for e in range(len(self.tabRot)):
 
       if ((int.from_bytes(self.tabRot[e]["destino"], sys.byteorder ) & 
@@ -67,22 +68,30 @@ class roteador():
       (int.from_bytes(bytes(pkg[16:20]), sys.byteorder) & 
       int.from_bytes(self.tabRot[e]["mascara"], sys.byteorder))):
 
-        if (self.tabRot[e]["gateway"] == bytearray([0, 0, 0, 0])):                      # I am the final destination
-          print("destination reached. From %d.%d.%d.%d to %d.%d.%d.%d: %s" % (origem[0], origem[1]
-          , origem[2], origem[3], destino[0], destino[1], destino[2], destino[3], msg))
-          return
-        
-        if (maiorMask < int.from_bytes(self.tabRot[e]["mascara"], sys.byteorder, signed=False)):      # I am the biggest current match
-          maiorMask = int.from_bytes(self.tabRot[e]["mascara"], sys.byteorder, signed=False)
-          index = e
-
+        if (int.from_bytes(self.tabRot[e]["mascara"] != 0)):
+          if (self.tabRot[e]["gateway"] == bytearray([0, 0, 0, 0])):                      # I am the final destination
+            print("destination reached. From %d.%d.%d.%d to %d.%d.%d.%d: %s" % (origem[0], origem[1]
+            , origem[2], origem[3], destino[0], destino[1], destino[2], destino[3], msg))
+            return
+          
+          if (maiorMask < int.from_bytes(self.tabRot[e]["mascara"], sys.byteorder, signed=False)):      # I am the biggest current match
+            maiorMask = int.from_bytes(self.tabRot[e]["mascara"], sys.byteorder, signed=False)
+            index = e
+        else:
+          flag = 1
+    
     if ttl == 1:                         # Dropa pacote caso TTL tenha acabado
       print("Time to Live exceeded in Transit, dropping packet for ".join(destino))
       return
-
+      
     data[8] = ttl - 1
 
     if (index == -1):                                                                   # Couldn't find compatible route
+
+      if (flag == 1):
+        # TODO: pegar rota default
+        return
+        
       print("destination %d.%d.%d.%d not found in routing table, dropping packet"
       % (destino[0], destino[1], destino[2], destino[3]))
       return 
