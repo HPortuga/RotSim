@@ -33,14 +33,14 @@ class roteador():
 
   def startServer(self):
 
+    updServerSocket = socket.socket(family=socket.AF_INET, type= socket.SOCK_DGRAM)
+    updServerSocket.bind((self.localIP, self.porta))
+    print("Servidor UDP escutando...")
+
     while(True):
-      updServerSocket = socket.socket(family=socket.AF_INET, type= socket.SOCK_DGRAM)
-      updServerSocket.bind((self.localIP, self.porta))
-      print("Servidor UDP escutando...")
       data = updServerSocket.recvfrom(self.bufferSize)
       print("conectado com {}".format(data[1]))
       self.processarPacote(bytearray(data[0]))
-      updServerSocket.close()
 
   def processarPacote (self, data):
     pkg = list(data)
@@ -83,7 +83,7 @@ class roteador():
           index_def = e
     
     if ttl == 1:                         # Dropa pacote caso TTL tenha acabado
-      print("Time to Live exceeded in Transit, dropping packet for ".join(destino))
+      print("Time to Live exceeded in Transit, dropping packet for %d.%d.%d.%d" % (destino[0], destino[1], destino[2], destino[3]))
       return
       
     data[8] = ttl - 1

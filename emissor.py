@@ -62,6 +62,7 @@ class emissor():
     udpClientSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
 
     udpClientSocket.sendto(self.pacote, serverAddressPort)
+    udpClientSocket.close()
     return
 
 argumentos = sys.argv
